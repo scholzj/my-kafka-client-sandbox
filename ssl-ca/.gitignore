@@ -1,0 +1,5 @@
+*.csr
+*.pem
+*.p12
+truststore
+*.keystore
