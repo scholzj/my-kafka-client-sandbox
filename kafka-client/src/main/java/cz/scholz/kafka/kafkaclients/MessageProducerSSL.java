@@ -8,11 +8,12 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.config.SslConfigs;
 
 import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
 
-public class MessageProducer {
-    private static int count = 10000;
+public class MessageProducerSSL {
+    private static int count = 1000;
     private static int timeTick = 1000;
 
     private static Boolean debug = true;
@@ -22,9 +23,15 @@ public class MessageProducer {
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
 
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093,localhost:19094");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+
+        props.put("security.protocol", "SSL");
+        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/user1.keystore");
+        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
+        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/truststore");
+        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 
