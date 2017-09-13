@@ -8,9 +8,10 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.config.SslConfigs;
 
-public class MessageConsumer {
-    private static int timeout = 30000;
+public class MessageConsumerSSL {
+    private static int timeout = 10000;
     private static int timeTick = 1000;
 
     private static Boolean debug = true;
@@ -21,7 +22,7 @@ public class MessageConsumer {
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
 
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093,localhost:19094");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "MyJavaConsumer");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
@@ -29,6 +30,12 @@ public class MessageConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        props.put("security.protocol", "SSL");
+        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/user1.keystore");
+        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
+        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/truststore");
+        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(props);
         consumer.subscribe(Collections.singletonList("myTopic"));
