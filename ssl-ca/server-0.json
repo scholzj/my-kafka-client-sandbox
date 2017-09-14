@@ -4,7 +4,8 @@
         "server-0",
         "kafka-0",
         "kafka-0.kafka",
-        "localhost"
+        "localhost",
+        "JAkub-MBP"
     ],
    "key": {
         "algo": "rsa",
