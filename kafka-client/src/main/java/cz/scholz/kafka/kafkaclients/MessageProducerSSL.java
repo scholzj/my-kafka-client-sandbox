@@ -15,8 +15,9 @@ import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
 public class MessageProducerSSL {
     private static int count = 1000;
     private static int timeTick = 1000;
+    private static int messageSize = 1024;
 
-    private static Boolean debug = true;
+    private static Boolean debug = false;
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
@@ -45,7 +46,7 @@ public class MessageProducerSSL {
         {
             messageNo++;
 
-            ProducerRecord record = new ProducerRecord<String, String>("myTopic", "MSG-" + messageNo, RandomStringGenerator.getSaltString(100));
+            ProducerRecord record = new ProducerRecord<String, String>("myTopic", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
             RecordMetadata result = (RecordMetadata) producer.send(record).get();
 
             size += result.serializedValueSize() + result.serializedKeySize();
