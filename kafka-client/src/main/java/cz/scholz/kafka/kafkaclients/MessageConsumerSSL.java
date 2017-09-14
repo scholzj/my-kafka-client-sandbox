@@ -21,6 +21,8 @@ public class MessageConsumerSSL {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
 
+        //System.setProperty("javax.net.debug", "ssl");
+
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093,localhost:19094");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "MyJavaConsumer");
@@ -36,6 +38,7 @@ public class MessageConsumerSSL {
         props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
         props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/truststore");
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
+        props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS"); // Hostname verification
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(props);
         consumer.subscribe(Collections.singletonList("myTopic"));

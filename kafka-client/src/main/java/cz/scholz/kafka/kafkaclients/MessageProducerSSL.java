@@ -33,6 +33,7 @@ public class MessageProducerSSL {
         props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
         props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/truststore");
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
+        props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS"); // Hostname verification
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 
