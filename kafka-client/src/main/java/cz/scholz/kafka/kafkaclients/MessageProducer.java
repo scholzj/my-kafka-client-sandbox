@@ -12,7 +12,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
 
 public class MessageProducer {
-    private static int count = 10000;
+    private static int count = 50;
     private static int timeTick = 1000;
     private static int messageSize = 1024;
 
@@ -39,7 +39,7 @@ public class MessageProducer {
         {
             messageNo++;
 
-            ProducerRecord record = new ProducerRecord<String, String>("myTopic", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
+            ProducerRecord record = new ProducerRecord<String, String>("step0", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
             RecordMetadata result = (RecordMetadata) producer.send(record).get();
 
             size += result.serializedValueSize() + result.serializedKeySize();

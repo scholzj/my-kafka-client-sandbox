@@ -5,23 +5,26 @@ import java.util.concurrent.CountDownLatch;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.KStreamBuilder;
+import org.apache.kafka.streams.Topology;
 
 public class StreamSample1 {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipeX");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
-        final KStreamBuilder builder = new KStreamBuilder();
+        final StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream("step0").to("step1");
 
-        final KafkaStreams streams = new KafkaStreams(builder, props);
+        final Topology topology = builder.build();
+
+        final KafkaStreams streams = new KafkaStreams(topology, props);
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
@@ -34,6 +37,8 @@ public class StreamSample1 {
         });
 
         try {
+            System.out.println(topology.describe());
+
             streams.start();
             latch.await();
         } catch (Throwable e) {
