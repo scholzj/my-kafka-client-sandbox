@@ -1,5 +1,7 @@
 package cz.scholz.kafka.kafkaclients.util;
 
+import java.util.Random;
+
 public class RandomStringGenerator {
     private static String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
