@@ -29,7 +29,8 @@ public class AsyncProducerCallback implements Callback {
         }
         else
         {
-            System.out.println("-E- Failed to receive ");
+            System.out.println("-E- Failed to receive: " + exception.getMessage());
+            exception.printStackTrace();
         }
     }
 }
