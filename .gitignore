@@ -75,7 +75,7 @@ Temporary Items
 .classpath
 .metadata
 bin/
-tmp/
+#tmp/
 *.tmp
 *.bak
 *.swp
