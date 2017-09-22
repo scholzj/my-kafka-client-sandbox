@@ -5,7 +5,9 @@
         "kafka-1",
         "kafka-1.kafka",
         "localhost",
-        "JAkub-MBP"
+        "JAkub-MBP",
+        "kafka-ext",
+        "kafka-int"
     ],
    "key": {
         "algo": "rsa",
