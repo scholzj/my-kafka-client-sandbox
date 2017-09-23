@@ -6,7 +6,6 @@
         "kafka-0.kafka",
         "localhost",
         "JAkub-MBP",
-        "kafka-ext",
         "kafka-int"
     ],
    "key": {

@@ -1,12 +1,12 @@
 {
-   "CN": "server-2",
+   "CN": "server-0",
    "hosts": [
-        "server-2",
-        "kafka-2",
-        "kafka-2.kafka",
+        "server-0",
+        "kafka-0",
+        "kafka-0.kafka",
         "localhost",
         "JAkub-MBP",
-        "kafka-int"
+        "kafka-ext"
     ],
    "key": {
         "algo": "rsa",
