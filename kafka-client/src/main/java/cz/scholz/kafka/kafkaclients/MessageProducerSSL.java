@@ -29,9 +29,9 @@ public class MessageProducerSSL {
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 
         props.put("security.protocol", "SSL");
-        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/user1.keystore");
+        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/keys/user1.keystore");
         props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/truststore");
+        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/keys/truststore");
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
         props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS"); // Hostname verification
 
