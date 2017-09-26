@@ -10,12 +10,9 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
-import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
-
 public class MessageProducerUUID {
-    private static int count = 10;
+    private static int count = 1000;
     private static int timeTick = 1000;
-    private static int messageSize = 50;
 
     private static Boolean debug = false;
 
@@ -26,7 +23,7 @@ public class MessageProducerUUID {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.UUIDSerializer");
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.UUIDSerializer");
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 
@@ -40,7 +37,7 @@ public class MessageProducerUUID {
         {
             messageNo++;
 
-            ProducerRecord record = new ProducerRecord<UUID, String>("UUIDTopic", UUID.randomUUID(), RandomStringGenerator.getSaltString(messageSize));
+            ProducerRecord record = new ProducerRecord<UUID, UUID>("UUIDTopic", UUID.randomUUID(), UUID.randomUUID());
             RecordMetadata result = (RecordMetadata) producer.send(record).get();
 
             size += result.serializedValueSize() + result.serializedKeySize();

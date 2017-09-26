@@ -11,7 +11,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 public class MessageConsumerUUID {
-    private static int timeout = 5000;
+    private static int timeout = 30000;
     private static int timeTick = 1000;
 
     private static Boolean debug = true;
@@ -29,10 +29,10 @@ public class MessageConsumerUUID {
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.UUIDDeserializer");
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.UUIDDeserializer");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-        KafkaConsumer<UUID, String> consumer = new KafkaConsumer<UUID, String>(props);
+        KafkaConsumer<UUID, UUID> consumer = new KafkaConsumer<UUID, UUID>(props);
         consumer.subscribe(Collections.singletonList("UUIDTopic"));
 
         Date totalStartTime = new Date();
@@ -43,14 +43,14 @@ public class MessageConsumerUUID {
 
         while (true)
         {
-            ConsumerRecords<UUID, String> records = consumer.poll(timeout);
+            ConsumerRecords<UUID, UUID> records = consumer.poll(timeout);
 
             if(records.isEmpty()) {
                 System.out.println("-I- No message in topic for " + timeout/1000 + " seconds. Finishing ...");
                 break;
             }
 
-            for (ConsumerRecord<UUID, String> record : records)
+            for (ConsumerRecord<UUID, UUID> record : records)
             {
                 size += record.serializedValueSize() + record.serializedKeySize();
                 sizeBlock += record.serializedValueSize() + record.serializedKeySize();
