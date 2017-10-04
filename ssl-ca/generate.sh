@@ -31,6 +31,7 @@ cat keys/server-ext-2.pem keys/ca.pem > keys/server-ext-2-full-chain.pem
 # Generate user keys
 cfssl gencert -ca keys/ca.pem -ca-key keys/ca-key.pem user1.json | cfssljson -bare keys/user1
 cfssl gencert -ca keys/ca.pem -ca-key keys/ca-key.pem user2.json | cfssljson -bare keys/user2
+cfssl gencert -ca keys/ca.pem -ca-key keys/ca-key.pem user-connect.json | cfssljson -bare keys/user-connect
 
 # Convert CA to Java Keystore format (truststrore)
 rm keys/truststore
@@ -45,6 +46,7 @@ openssl pkcs12 -export -out keys/server-ext-1.p12 -in keys/server-ext-1-full-cha
 openssl pkcs12 -export -out keys/server-ext-2.p12 -in keys/server-ext-2-full-chain.pem -inkey keys/server-ext-2-key.pem -password pass:$PASSWORD
 openssl pkcs12 -export -out keys/user1.p12 -in keys/user1.pem -inkey keys/user1-key.pem -password pass:$PASSWORD
 openssl pkcs12 -export -out keys/user2.p12 -in keys/user2.pem -inkey keys/user2-key.pem -password pass:$PASSWORD
+openssl pkcs12 -export -out keys/user-connect.p12 -in keys/user-connect.pem -inkey keys/user-connect-key.pem -password pass:$PASSWORD
 
 # Convert PKCS12 keys to keystores
 rm keys/*.keystore
@@ -56,3 +58,4 @@ keytool -importkeystore -srckeystore keys/server-ext-1.p12 -srcstoretype PKCS12 
 keytool -importkeystore -srckeystore keys/server-ext-2.p12 -srcstoretype PKCS12 -srcstorepass $PASSWORD -destkeystore keys/server-ext-2.keystore -deststoretype JKS -deststorepass $PASSWORD -noprompt
 keytool -importkeystore -srckeystore keys/user1.p12 -srcstoretype PKCS12 -srcstorepass $PASSWORD -destkeystore keys/user1.keystore -deststoretype JKS -deststorepass $PASSWORD -noprompt
 keytool -importkeystore -srckeystore keys/user2.p12 -srcstoretype PKCS12 -srcstorepass $PASSWORD -destkeystore keys/user2.keystore -deststoretype JKS -deststorepass $PASSWORD -noprompt
+keytool -importkeystore -srckeystore keys/user-connect.p12 -srcstoretype PKCS12 -srcstorepass $PASSWORD -destkeystore keys/user-connect.keystore -deststoretype JKS -deststorepass $PASSWORD -noprompt
