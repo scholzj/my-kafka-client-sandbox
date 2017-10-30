@@ -6,6 +6,8 @@
         "kafka-2.kafka",
         "localhost",
         "JAkub-MBP",
+        "jscholz",
+        "jscholz.remote.csb",
         "kafka-ext"
     ],
    "key": {
