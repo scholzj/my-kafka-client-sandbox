@@ -8,9 +8,9 @@ import java.util.concurrent.ExecutionException;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.DescribeTopicsResult;
-import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.clients.admin.TopicDescription;
 import org.apache.kafka.common.TopicPartitionInfo;
+import org.apache.kafka.common.config.SslConfigs;
 
 public class MyAdminClient {
     private static int timeout = 30000;
@@ -22,11 +22,19 @@ public class MyAdminClient {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
 
-        Properties props = new Properties();
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
+        //System.setProperty("javax.net.debug", "ssl");
 
-        AdminClient admin = KafkaAdminClient.create(props);
-        DescribeTopicsResult result = admin.describeTopics(Arrays.asList(new String[]{"__consumer_offsets"}));
+        Properties props = new Properties();
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-int:19092");
+        props.put("security.protocol", "SSL");
+        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/keys/user1.keystore");
+        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
+        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/jakub/development/my-kafka-client-sandbox/ssl-ca/keys/truststore");
+        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
+        props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS"); // Hostname verification
+
+        AdminClient admin = AdminClient.create(props);
+        DescribeTopicsResult result = admin.describeTopics(Arrays.asList(new String[]{"test"}));
 
         Map<String, TopicDescription> topics = result.all().get();
 
