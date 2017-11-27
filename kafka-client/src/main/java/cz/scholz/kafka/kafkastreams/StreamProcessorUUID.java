@@ -18,8 +18,8 @@ public class StreamProcessorUUID {
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "uuid-application");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
         //props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093,localhost:19094");
-        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.UUID().getClass());
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.UUID().getClass());
+        /*props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.UUID().getClass());
+        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.UUID().getClass());*/
 
         /*props.put("security.protocol", "SSL");
         props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/home/jscholz/development/my-kafka-client-sandbox/ssl-ca/keys/user1.keystore");
@@ -31,9 +31,9 @@ public class StreamProcessorUUID {
 
         StreamsBuilder builder = new StreamsBuilder();
         KStream<UUID, UUID> uuidStream = builder.stream("UUIDTopic");
-        uuidStream
+        /*uuidStream
                 .flatMapValues(value -> Arrays.asList(value.toString().split("-")))
-                .to(Serdes.UUID(), Serdes.String(),"UUIDBlocks");
+                .to(Serdes.UUID(), Serdes.String(),"UUIDBlocks");*/
 
         final Topology topology = builder.build();
         final KafkaStreams streams = new KafkaStreams(topology, props);
