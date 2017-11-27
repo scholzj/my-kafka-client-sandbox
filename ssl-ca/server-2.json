@@ -8,7 +8,8 @@
         "JAkub-MBP",
         "jscholz",
         "jscholz.remote.csb",
-        "kafka-int"
+        "kafka-int",
+        "127.0.0.1"
     ],
    "key": {
         "algo": "rsa",

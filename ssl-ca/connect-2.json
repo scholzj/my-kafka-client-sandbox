@@ -6,7 +6,8 @@
         "kafka-int",
         "kafka-ext",
         "jscholz",
-        "jscholz.remote.csb"
+        "jscholz.remote.csb",
+        "127.0.0.1"
     ],
    "key": {
         "algo": "rsa",
