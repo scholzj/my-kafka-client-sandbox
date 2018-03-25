@@ -9,5 +9,5 @@ if [ ! -f /tmp/zookeeper-${ZOOKEEPER_NODE}/myid ]; then
     cp -r ${CONFIG_DIR}/tmp/zookeeper-${ZOOKEEPER_NODE} /tmp/
 fi
 
-export SERVER_JVMFLAGS="-Djava.security.auth.login.config=${CONFIG_DIR}/jaas.config"; \
-    bin/zkServer.sh start-foreground ${CONFIG_DIR}/zookeeper-${ZOOKEEPER_NODE}.properties
+export EXTRA_ARGS="-Djava.security.auth.login.config=${CONFIG_DIR}/jaas.config"; \
+    bin/zookeeper-server-start.sh ${CONFIG_DIR}/zookeeper-${ZOOKEEPER_NODE}.properties
