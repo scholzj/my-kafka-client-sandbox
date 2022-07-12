@@ -32,7 +32,7 @@ public class MessageConsumerOauth {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-        props.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required token=eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJteXByb2plY3QiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoia2Fma2EtY29uc3VtZXItdG9rZW4tbnA3YjciLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoia2Fma2EtY29uc3VtZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJhNTE3ODdhMy05MTdlLTRkY2ItYjE0Ni0wNGQxZGZjYjRhZTIiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6bXlwcm9qZWN0OmthZmthLWNvbnN1bWVyIn0.PTslZt1kTAa9PaKVXCOb8hKzNXPD-eogisoC7uYOb7LPhEo8ZODbHskEzJv3wDI2zb7H-LPn_6Cu_G4sPL_pC8zd2n6lr0SPKpgXRcK850RDXrbFOY8j8a8c6bANwe3zY6QkQXPwfxp8rGGZZbgNWZ79RP9bPS0GCjKwHzoixAmjrszOmOsFtRgTn-8rQ7BN3cPA1VG68VLpc_RIsdkSIAbU4Jx-2WVaaF16JDa2ezTzht3jPoLHyPASzjy0QyAWQW2pFg9mEtBa1z3LDkqWfs26rDlKJh8Qy82NRGt5cnggMnnTEp-76tOWQlG1HQ0vsPaL7lI-bqRDea_L1FDBAQ;");
+        props.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required token=<token>;");
         props.put("security.protocol","SASL_PLAINTEXT");
         props.put("sasl.mechanism","OAUTHBEARER");
         props.put("sasl.login.callback.handler.class","io.strimzi.kafka.kubernetes.authenticator.KubernetesTokenLoginCallbackHandler");

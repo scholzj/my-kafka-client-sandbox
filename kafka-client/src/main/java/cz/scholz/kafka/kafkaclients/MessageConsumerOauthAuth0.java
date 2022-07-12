@@ -24,9 +24,9 @@ public class MessageConsumerOauthAuth0 {
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
 
         System.setProperty(ClientConfig.OAUTH_TOKEN_ENDPOINT_URI, "https://scholzj.eu.auth0.com/oauth/token");
-        //System.setProperty(ClientConfig.OAUTH_ACCESS_TOKEN, "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik9FSTBNa0l6UmpjelEwSkNSalJGUmpjNVJrRkdPVVJFUlRrME0wRkVSVUkwTXpNd09VUkROdyJ9.eyJpc3MiOiJodHRwczovL3NjaG9semouZXUuYXV0aDAuY29tLyIsInN1YiI6ImZUaVdxMkduVWp2ZmQ2aWMzRzFNNkhBcTJzQ1JCcnVpQGNsaWVudHMiLCJhdWQiOiI0ZTFYZnd4MEhIZmgyalRIYm45aVd2dlRvenV5anRhTCIsImlhdCI6MTYxNTg1MDY3NiwiZXhwIjoxNjE1OTM3MDc2LCJhenAiOiJmVGlXcTJHblVqdmZkNmljM0cxTTZIQXEyc0NSQnJ1aSIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.sKrdfMipNnDHCxNGG7XnXOYZPFu1yijWiIOj94RbvkFXcb0htCpBPGjlShxUApYl_j_bKAIeml5B_2IBwXullWCcsUdY0X2vHai1uwqsy2IxesllFeDQmFlYyW5Od36qJVJQrXwjJW1Bz3Ujw5tmGHqcAMfAR_0kOGqcfelVWwMWTQKWZlthD0KHgDcGb_fN0bvvDny0jxUkNtlcka1t8ye5sU4q4BCLpFT21xXLhc2qlXqfX_hr3p84AFM3SDQquFM_9xlOVE5LH3FTvcNLqG7Diw0Ln2ao9l6Bqa5-mvB8UQZwnfsX48meh3Kh5WwTAIMZbWS0XkNrEc0-N6w_ng");
-        System.setProperty(Config.OAUTH_CLIENT_ID, "Cjr89bHcrTK15fgmnHLV3ZlMJPEgbOTf");
-        System.setProperty(Config.OAUTH_CLIENT_SECRET, "xBwUvcjfNEM9VetlrMKiRO5ZT9oXgd4l8bVPtRDoyJpD6nXoHL_rh2PsJexIXQnm");
+        //System.setProperty(ClientConfig.OAUTH_ACCESS_TOKEN, "Bearer <token>");
+        System.setProperty(Config.OAUTH_CLIENT_ID, "xxx");
+        System.setProperty(Config.OAUTH_CLIENT_SECRET, "yyy");
         System.setProperty(ClientConfig.OAUTH_AUDIENCE, "my-cluster");
         //System.setProperty(Config.OAUTH_USERNAME_CLAIM, "preferred_username");
         //System.setProperty(Config.OAUTH_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM, "");
