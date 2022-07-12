@@ -8,7 +8,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KStreamBuilder;
+//import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.apache.kafka.streams.kstream.KTable;
 
 
@@ -29,7 +29,7 @@ public class StreamProcessor {
         props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS"); // Hostname verification
 
 
-        KStreamBuilder builder = new KStreamBuilder();
+        /*KStreamBuilder builder = new KStreamBuilder();
         KStream<String, String> textLines = builder.stream("TextLinesTopic");
         KTable<String, Long> wordCounts = textLines
                 .flatMapValues(textLine -> Arrays.asList(textLine.toLowerCase().split("\\W+")))
@@ -39,7 +39,7 @@ public class StreamProcessor {
 
         KafkaStreams streams = new KafkaStreams(builder, props);
         streams.start();
-
+*/
 
     }
 

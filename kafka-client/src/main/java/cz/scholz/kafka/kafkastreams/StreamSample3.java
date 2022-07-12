@@ -21,7 +21,7 @@ public class StreamSample3 {
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
-        final StreamsBuilder builder = new StreamsBuilder();
+        /*final StreamsBuilder builder = new StreamsBuilder();
 
         KStream<String, String> source = builder.stream("step2");
         source.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault())))
@@ -50,6 +50,6 @@ public class StreamSample3 {
         } catch (Throwable e) {
             System.exit(1);
         }
-        System.exit(0);
+        System.exit(0);*/
     }
 }

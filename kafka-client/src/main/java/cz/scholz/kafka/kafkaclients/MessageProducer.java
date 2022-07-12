@@ -1,5 +1,6 @@
 package cz.scholz.kafka.kafkaclients;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -16,14 +17,14 @@ public class MessageProducer {
     private static int timeTick = 1000;
     private static int messageSize = 1024;
 
-    private static Boolean debug = false;
+    private static Boolean debug = true;
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
 
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092,localhost:9093,localhost:9094");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "my-cluster-kafka-bootstrap.myproject:9095");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 
@@ -39,7 +40,8 @@ public class MessageProducer {
         {
             messageNo++;
 
-            ProducerRecord record = new ProducerRecord<String, String>("step0", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
+            ProducerRecord record = new ProducerRecord<String, String>("kafka-test-apps", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
+            record.headers().add("jakub", "scholzxxx".getBytes(StandardCharsets.UTF_8));
             RecordMetadata result = (RecordMetadata) producer.send(record).get();
 
             size += result.serializedValueSize() + result.serializedKeySize();

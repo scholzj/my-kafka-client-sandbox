@@ -1,10 +1,7 @@
 package cz.scholz.kafka.kafkaclients;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-
+import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -12,9 +9,11 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.config.SslConfigs;
 
-import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
+import java.util.Date;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
-public class MessageProducerSSL {
+public class MessageProducerOauth {
     private static int count = 1000;
     private static int timeTick = 100;
     private static int messageSize = 1024;
@@ -24,34 +23,20 @@ public class MessageProducerSSL {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
-        //System.setProperty("javax.net.debug", "ssl");
 
         Properties props = new Properties();
-        //props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:39092,localhost:39093,localhost:39094");
-        //props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "my-cluster-kafka-bootstrap-myproject.127.0.0.1.nip.io:443");
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "europe-kafka-bootstrap-kafka-europe.apps.jscholz.rhmw-integrations.net:443");
-        //props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.65.3:32104");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9099");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "zstd");
-        //props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "some-id-my-transactional-id");
 
-        props.put("security.protocol", "SSL");
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/scholzj/development/strimzi/truststore.jks");
-        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
-        /*props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/scholzj/development/strimzi/hacking/truststore.jks");
-        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
-        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/Users/scholzj/development/strimzi/hacking/user.p12");
-        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");*/
-        /*props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/home/jscholz/development/my-kafka-client-sandbox/ssl-ca/keys/user1.keystore");
-        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/home/jscholz/development/my-kafka-client-sandbox/ssl-ca/keys/truststore");
-        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");*/
-        props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS"); // Hostname verification
+        //props.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required token=eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJteXByb2plY3QiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoic3RyaW16aS1jbHVzdGVyLW9wZXJhdG9yLXRva2VuLXE5Z2Q4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6InN0cmltemktY2x1c3Rlci1vcGVyYXRvciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjI4YmQxN2U3LWE3ZjctMTFlOS05YzA2LTMyMWYxYWMxZjU5ZCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpteXByb2plY3Q6c3RyaW16aS1jbHVzdGVyLW9wZXJhdG9yIn0.VUut5rtG4tAheJj33LiK5qhd4dFaS7E9bXGbkn2Hf5I2p3qyc-C5ise1fy37mgTo1wW9cP188UQb-rqn7MEbR3rELMbBP42UgI5eE8kybr-MUvyDABElqEXlvuLt_yPLNOlZEhvv2X4b_Y9papj7dx4YKO-MEeHzfKnhdV4R2PUwEtU6RyvfXDkDrTTRlhdEzlVo_5vdemyaEvw4Epfu0yGKH4ZQAgRkTfuB0d08o9HvUcsRLCJxdFM6eaqepN2gfo5DK2rZNgoDBWl-ny5-ZoqKlY4x-5rN52e3Av_VgRGMrLA-SbVq7u6s6n_0g0ILFQREsfdJaJuvWf8mFQ_h9A;");
+        //props.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required token=eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJteXByb2plY3QiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoia2Fma2EtcHJvZHVjZXItdG9rZW4tYzlmOGoiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoia2Fma2EtcHJvZHVjZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIxOGZiYzM5Ny1hY2JhLTQ3MDktODYzYi0yOWMwMGRkZjkzM2YiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6bXlwcm9qZWN0OmthZmthLXByb2R1Y2VyIn0.MuJCHdGL5C2Yfyj-1JlavIBkqi0tic0ahzwr3_YMNLMgO65LRffKBhXFDym8taJe2_RHVPDDzEsMRDdMfz3b3KdzulRSZUd6hPBlpl-vzH_RorHiWyb2SAgv8yVZAI_JP4H4bCjY4PQBcBzt1aGFk4HeA9aC0OJ8fr2HSyq-P4mETW6tCyuhyYu3XTXlVv3aUcw-T3mWf13yJHbFf79vy33tP7Bar9k9fKyDlNM8O-TSoBn5Eznzdc4UOk6MxvfORE3WXo7LEjxN9E51enxxEqFS_Pp-fs05uPla55CFaJSYDI0LWewMAHggAXg-mgBSQQ2BSqLywqBfh_8_nWx1gg;");
+        props.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required unsecuredLoginStringClaim_sub=\"thePrincipalName\";");
+        props.put("security.protocol","SASL_PLAINTEXT");
+        props.put("sasl.mechanism","OAUTHBEARER");
+        //props.put("sasl.login.callback.handler.class","io.strimzi.kafka.kubernetes.authenticator.KubernetesTokenLoginCallbackHandler");
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
-
-        //producer.initTransactions();
 
         Date totalStartTime = new Date();
         Date blockStartTime = new Date();
@@ -63,10 +48,7 @@ public class MessageProducerSSL {
         {
             messageNo++;
 
-            //producer.beginTransaction();
-
-            ProducerRecord record = new ProducerRecord<String, String>("my-mm2-topic", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
-            record.headers().add("jakub", "scholz".getBytes(StandardCharsets.UTF_8));
+            ProducerRecord record = new ProducerRecord<String, String>("kafka-test-apps", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
             RecordMetadata result = (RecordMetadata) producer.send(record).get();
 
             size += result.serializedValueSize() + result.serializedKeySize();
@@ -83,8 +65,6 @@ public class MessageProducerSSL {
                 blockStartTime = new Date();
                 sizeBlock = 0;
             }
-
-            //producer.commitTransaction();
         }
 
         Date blockEndTime = new Date();

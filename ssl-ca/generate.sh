@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PASSWORD="123456"
+PASSWORD="pwd123456"
 
 # Create dir
 mkdir keys/

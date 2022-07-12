@@ -1,16 +1,15 @@
 package cz.scholz.kafka.admin;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.DescribeTopicsResult;
 import org.apache.kafka.clients.admin.TopicDescription;
 import org.apache.kafka.common.TopicPartitionInfo;
-import org.apache.kafka.common.config.SslConfigs;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 public class MyAdminClient {
     private static int timeout = 30000;

@@ -1,10 +1,6 @@
 package cz.scholz.kafka.kafkaclients;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-
+import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -12,9 +8,12 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.config.SslConfigs;
 
-import cz.scholz.kafka.kafkaclients.util.RandomStringGenerator;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
-public class MessageProducerSSL {
+public class MessageIdempotentProducerSSL {
     private static int count = 1000;
     private static int timeTick = 100;
     private static int messageSize = 1024;
@@ -27,27 +26,23 @@ public class MessageProducerSSL {
         //System.setProperty("javax.net.debug", "ssl");
 
         Properties props = new Properties();
-        //props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:39092,localhost:39093,localhost:39094");
-        //props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "my-cluster-kafka-bootstrap-myproject.127.0.0.1.nip.io:443");
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "europe-kafka-bootstrap-kafka-europe.apps.jscholz.rhmw-integrations.net:443");
-        //props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.65.3:32104");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.1.72:31670");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "zstd");
+        //props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "zstd");
         //props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "some-id-my-transactional-id");
 
         props.put("security.protocol", "SSL");
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/scholzj/development/strimzi/truststore.jks");
-        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
-        /*props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/Users/scholzj/development/strimzi/hacking/truststore.jks");
-        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");
-        props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/Users/scholzj/development/strimzi/hacking/user.p12");
-        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");*/
-        /*props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "/home/jscholz/development/my-kafka-client-sandbox/ssl-ca/keys/user1.keystore");
-        props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "123456");
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "/home/jscholz/development/my-kafka-client-sandbox/ssl-ca/keys/truststore");
-        props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "123456");*/
-        props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS"); // Hostname verification
+        props.put("config.providers", "secrets");
+        props.put("config.providers.secrets.class", "io.strimzi.kafka.KubernetesSecretConfigProvider");
+        props.put(SslConfigs.SSL_KEYSTORE_TYPE_CONFIG, "PEM");
+        props.put(SslConfigs.SSL_KEYSTORE_CERTIFICATE_CHAIN_CONFIG, "${secrets:myproject/my-user:user.crt}");
+        props.put(SslConfigs.SSL_KEYSTORE_KEY_CONFIG, "${secrets:myproject/my-user:user.key}");
+        props.put(SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG, "PEM");
+        props.put(SslConfigs.SSL_TRUSTSTORE_CERTIFICATES_CONFIG, "${secrets:myproject/my-cluster-cluster-ca-cert:ca.crt}");
+        props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, ""); // Hostname verification
+
+        props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
 
@@ -65,7 +60,7 @@ public class MessageProducerSSL {
 
             //producer.beginTransaction();
 
-            ProducerRecord record = new ProducerRecord<String, String>("my-mm2-topic", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
+            ProducerRecord record = new ProducerRecord<String, String>("kafka-test-apps", "MSG-" + messageNo, RandomStringGenerator.getSaltString(messageSize));
             record.headers().add("jakub", "scholz".getBytes(StandardCharsets.UTF_8));
             RecordMetadata result = (RecordMetadata) producer.send(record).get();
 
